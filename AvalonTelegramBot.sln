@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.30309.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Avalon.Core", "Avalon.Core\Avalon.Core.csproj", "{311DF9FC-9D64-4F2A-84A9-9CF236B01759}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avalon.Web", "Avalon.Web\Avalon.Web.csproj", "{823E8EC8-BFF7-486E-8EB0-8CCA29398DC7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{311DF9FC-9D64-4F2A-84A9-9CF236B01759}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{311DF9FC-9D64-4F2A-84A9-9CF236B01759}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{311DF9FC-9D64-4F2A-84A9-9CF236B01759}.Release|Any CPU.Build.0 = Release|Any CPU
+		{823E8EC8-BFF7-486E-8EB0-8CCA29398DC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{823E8EC8-BFF7-486E-8EB0-8CCA29398DC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{823E8EC8-BFF7-486E-8EB0-8CCA29398DC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{823E8EC8-BFF7-486E-8EB0-8CCA29398DC7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
