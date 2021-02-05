@@ -1,9 +1,8 @@
 using Avalon.Core.Enums;
 using Avalon.Core.Interfaces;
-using System;
+using Avalon.Core.Phases;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Avalon.Core.Models
@@ -42,22 +41,30 @@ namespace Avalon.Core.Models
             await Context.Leader.SendMessage(string.Format("Please assign {0} players to quest team", teamSize));
             var team = await Context.Leader.SelectUsers(teamSize);
 
-            await Context.SendMessage(string.Format("Proposed team in {0}", string.Join(",", team.Select(user => user.Name))));
+            await Context.SendMessage(string.Format("Proposed team is {0}", string.Join(",", team.Select(user => user.Name))));
             TransferLeadership();
+
+            await Context.SendMessage(string.Format("New leader is {0}", Context.Leader.Name));
 
             var votes = await Task.WhenAll(Context.Users.Select(x => x.SelectVoteToken()));
             if (votes.Count(x => x == VoteToken.VoteApproved) > votes.Count(x => x == VoteToken.VoteRejected))
             {
+                await Context.SendMessage("Team is approved");
 
+                new QuestPhase(Context, team, Round);
             }
             else
             {
                 if (UnsuccessfullVotes == 5)
                 {
-                    new EndPhase(Context);
+                    await Context.SendMessage("Uncessessfull votes limit reached");
+
+                    new EvilWonPhase(Context);
                 }
                 else
                 {
+                    await Context.SendMessage(string.Format("Team not approved, attempts {0}", UnsuccessfullVotes + 1));
+
                     new TeamBuildingPhase(Context, Round, UnsuccessfullVotes + 1);
                 }
             }

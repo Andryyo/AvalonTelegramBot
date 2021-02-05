@@ -1,7 +1,6 @@
 using Avalon.Core.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Avalon.Core.Models;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Avalon.Core.Phases
@@ -16,9 +15,24 @@ namespace Avalon.Core.Phases
 
         public IAvalonContext Context { get; }
 
-        public Task<IPhase> Execute()
+        public async Task<IPhase> Execute()
         {
-            throw new NotImplementedException();
+            var asassin = Context.Users.FirstOrDefault(x => x.Role == Enums.Role.Assassin);
+
+            await asassin.SendMessage("Who you want to kill?");
+
+            var target = (await asassin.SelectUsers(1)).Single();
+
+            await Context.SendMessage(string.Format("Asassin killed {0}, he was {1}", target.Name, target.Role));
+
+            if (target.Role == Enums.Role.Merlin)
+            {
+                return new EvilWonPhase(Context);
+            }
+            else
+            {
+                return new GoodWonPhase(Context);
+            }
         }
     }
 }

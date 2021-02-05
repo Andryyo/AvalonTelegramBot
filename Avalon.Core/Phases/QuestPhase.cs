@@ -1,9 +1,7 @@
 using Avalon.Core.Interfaces;
 using Avalon.Core.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Avalon.Core.Phases
@@ -28,7 +26,9 @@ namespace Avalon.Core.Phases
 
         public async Task<IPhase> Execute()
         {
-            var votes = await Task.WhenAll(Context.Users.Select(x => x.SelectQuestCard()));
+            await Context.SendMessage(string.Format("{0} are to decide quest outcome", string.Join(",", participants.Select(x => x.Name))));
+
+            var votes = await Task.WhenAll(participants.Select(x => x.SelectQuestCard()));
 
             if (votes.Any(x => x == Enums.QuestCard.MissionFailed))
             {
@@ -38,6 +38,9 @@ namespace Avalon.Core.Phases
             {
                 Context.Results.Add(Enums.QuestCard.MissionSuccess);
             }
+
+            await Context.SendMessage(string.Format("Quest tokens are {0}", string.Join(",", votes)));
+            await Context.SendMessage(string.Format("Quests results are {0}", string.Join(",", Context.Results)));
 
             if (Context.Results.Count(x => x == Enums.QuestCard.MissionSuccess) == 3)
             {

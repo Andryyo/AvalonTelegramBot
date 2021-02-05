@@ -1,7 +1,5 @@
 using Avalon.Core.Enums;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Avalon.Core.Interfaces
@@ -10,7 +8,7 @@ namespace Avalon.Core.Interfaces
     {
         string Name { get; }
 
-        Role Role { get; set; }
+        Role? Role { get; set; }
 
         Task SendMessage(string message);
 

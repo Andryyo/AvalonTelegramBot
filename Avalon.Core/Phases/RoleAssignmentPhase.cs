@@ -3,30 +3,27 @@ using Avalon.Core.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Avalon.Core.Models
 {
     class RoleAssignmentPhase : IPhase
     {
-        private readonly IRolesGenerator rolesGenerator;
-
         public RoleAssignmentPhase(
-            IAvalonContext avalonContext,
-            IRolesGenerator rolesGenerator)
+            IAvalonContext avalonContext)
         {
             this.Context = avalonContext;
-            this.rolesGenerator = rolesGenerator;
         }
 
         public IAvalonContext Context { get; }
 
         public async Task<IPhase> Execute()
         {
+            await Context.SendMessage("Wait, we`ll assign roles");
+
             var rand = new Random((int)DateTime.Now.Ticks);
 
-            var roles = rolesGenerator.Generate(Context.Users.Count()).OrderBy(x => rand.Next()).ToArray();
+            var roles = GetRoles(Context.Users.Count()).OrderBy(x => rand.Next()).ToArray();
 
             int i = 0;
             foreach (var user in Context.Users)
@@ -36,7 +33,9 @@ namespace Avalon.Core.Models
             }
 
             Context.Leader = Context.Users.ElementAt(rand.Next() % Context.Users.Count());
-            
+
+            await Context.SendMessage(string.Format("Leader is {0}", Context.Leader.Name));
+
             return new IntroductionPhase();
         }
 
@@ -59,6 +58,27 @@ namespace Avalon.Core.Models
                 default:
                     await user.SendMessage("You are noone");
                     break;
+            }
+        }
+
+        private IEnumerable<Role> GetRoles(int players)
+        {
+            switch (players)
+            {
+                case 5:
+                    return new Role[] { Role.Merlin, Role.Assassin, Role.Servant, Role.Servant, Role.Minion};
+                case 6:
+                    return new Role[] { Role.Merlin, Role.Assassin, Role.Servant, Role.Servant, Role.Minion, Role.Servant };
+                case 7:
+                    return new Role[] { Role.Merlin, Role.Assassin, Role.Servant, Role.Servant, Role.Minion, Role.Servant, Role.Minion };
+                case 8:
+                    return new Role[] { Role.Merlin, Role.Assassin, Role.Servant, Role.Servant, Role.Minion, Role.Servant, Role.Minion, Role.Servant };
+                case 9:
+                    return new Role[] { Role.Merlin, Role.Assassin, Role.Servant, Role.Servant, Role.Minion, Role.Servant, Role.Minion, Role.Servant, Role.Servant };
+                case 10:
+                    return new Role[] { Role.Merlin, Role.Assassin, Role.Servant, Role.Servant, Role.Minion, Role.Servant, Role.Minion, Role.Servant, Role.Servant, Role.Minion};
+                default:
+                    throw new Exception();
             }
         }
     }
