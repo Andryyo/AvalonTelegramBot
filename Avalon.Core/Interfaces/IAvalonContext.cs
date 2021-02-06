@@ -6,6 +6,8 @@ namespace Avalon.Core.Interfaces
 {
     public interface IAvalonContext
     {
+        long Id { get; }
+
         IList<IUser> Users { get; }
 
         IUser Leader { get; set; }

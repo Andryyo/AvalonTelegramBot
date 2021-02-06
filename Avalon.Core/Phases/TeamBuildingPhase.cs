@@ -39,7 +39,7 @@ namespace Avalon.Core.Models
         {
             var teamSize = GetTeamSize(Context.Users.Count(), Round);
             await Context.Leader.SendMessage(string.Format("Please assign {0} players to quest team", teamSize));
-            var team = await Context.Leader.SelectUsers(teamSize);
+            var team = await Context.Leader.SelectUsers(Context.Users, teamSize);
 
             await Context.SendMessage(string.Format("Proposed team is {0}", string.Join(",", team.Select(user => user.Name))));
             TransferLeadership();

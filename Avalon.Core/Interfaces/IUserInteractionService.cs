@@ -8,14 +8,12 @@ namespace Avalon.Core.Interfaces
 {
     public interface IUserInteractionService
     {
-        Task SendMessage(string message);
+        Task SendMessage(long id, string message);
 
-        Task SendMessage(IUser user, string message);
+        Task<IEnumerable<IUser>> SelectUsers(long id, IEnumerable<IUser> users, int count);
 
-        Task<IEnumerable<IUser>> SelectUsers(IUser user, int count);
+        Task<QuestCard> SelectQuestCard(long id);
 
-        Task<QuestCard> SelectQuestCard(IUser user);
-
-        Task<VoteToken> SelectVoteToken(IUser user);
+        Task<VoteToken> SelectVoteToken(long id);
     }
 }

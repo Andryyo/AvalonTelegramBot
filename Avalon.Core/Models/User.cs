@@ -16,18 +16,18 @@ namespace Avalon.Core.Models
             this.userInteractionService = userInteractionService;
         }
 
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         public string Name { get; set; }
 
         public Role? Role { get; set; }
 
-        public Task<QuestCard> SelectQuestCard() => userInteractionService.SelectQuestCard(this);
+        public Task<QuestCard> SelectQuestCard() => userInteractionService.SelectQuestCard(Id);
 
-        public Task<IEnumerable<IUser>> SelectUsers(int count) => userInteractionService.SelectUsers(this, count);
+        public Task<IEnumerable<IUser>> SelectUsers(IEnumerable<IUser> users, int count) => userInteractionService.SelectUsers(Id, users, count);
 
-        public Task<VoteToken> SelectVoteToken() => userInteractionService.SelectVoteToken(this);
+        public Task<VoteToken> SelectVoteToken() => userInteractionService.SelectVoteToken(Id);
 
-        public Task SendMessage(string message) => userInteractionService.SendMessage(this, message);
+        public Task SendMessage(string message) => userInteractionService.SendMessage(Id, message);
     }
 }

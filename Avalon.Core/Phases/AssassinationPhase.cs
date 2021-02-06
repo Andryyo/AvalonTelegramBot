@@ -21,7 +21,7 @@ namespace Avalon.Core.Phases
 
             await asassin.SendMessage("Who you want to kill?");
 
-            var target = (await asassin.SelectUsers(1)).Single();
+            var target = (await asassin.SelectUsers(Context.Users, 1)).Single();
 
             await Context.SendMessage(string.Format("Asassin killed {0}, he was {1}", target.Name, target.Role));
 

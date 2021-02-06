@@ -16,12 +16,14 @@ namespace Avalon.Core.Models
             this.userInteractionService = userInteractionService;
         }
 
+        public long Id { get; set; }
+
         public IList<IUser> Users { get; set; } = new List<IUser>();
 
         public IUser Leader { get; set; }
 
         public IList<QuestCard> Results { get; set; } = new List<QuestCard>();
 
-        public Task SendMessage(string message) => userInteractionService.SendMessage(message);
+        public Task SendMessage(string message) => userInteractionService.SendMessage(Id, message);
     }
 }

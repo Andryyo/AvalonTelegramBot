@@ -14,12 +14,15 @@ namespace Avalon.Core.Models
             this.userInteractionService = userInteractionService;
         }
 
+        public int Id { get; set; }
+
         public IList<IUser> Users { get; set; }
 
         public async Task Run()
         {
             var context = new AvalonContext(userInteractionService);
             context.Users = Users;
+            context.Id = Id;
 
             IPhase state = new RoleAssignmentPhase(context);
             while (state != null)
