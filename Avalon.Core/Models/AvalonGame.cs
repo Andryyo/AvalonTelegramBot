@@ -29,13 +29,18 @@ namespace Avalon.Core.Models
             context.Users = Users;
             context.Id = Id;
 
-            IPhase state = new RoleAssignmentPhase(context);
-            while (state != null)
+            try
             {
-                state = await state.Execute();
+                IPhase state = new RoleAssignmentPhase(context);
+                while (state != null)
+                {
+                    state = await state.Execute();
+                }
             }
-
-            State = GameState.Ended;
+            finally
+            {
+                State = GameState.Ended;
+            }
         }
     }
 }

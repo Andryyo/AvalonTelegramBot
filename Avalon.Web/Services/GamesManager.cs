@@ -24,6 +24,12 @@ namespace Avalon.Web.Services
 
         public async Task Create(long id)
         {
+            if (games.Any(x => x.Id == id))
+            {
+                await userInteractionService.SendMessage(id, "Game is already started. Call /join command to join, /play to start game");
+                return;
+            }
+
             var game = new AvalonGame(userInteractionService);
             game.Id = id;
 
@@ -35,7 +41,7 @@ namespace Avalon.Web.Services
         public async Task Join(long id, IUser user)
         {
             var game = games.FirstOrDefault(x => x.Id == id);
-            if (game != null && game.State == Core.Enums.GameState.Created)
+            if (game != null && game.State == Core.Enums.GameState.Created && game.Users.All(x => x.Id != user.Id))
             {
                 game.Users.Add(user);
 
@@ -70,6 +76,16 @@ namespace Avalon.Web.Services
 
                     await userInteractionService.SendMessage(id, "Game ended");
                 });
+            }
+        }
+
+        public async Task Clear(long id)
+        {
+            var game = games.FirstOrDefault(x => x.Id == id);
+
+            if (game != null)
+            {
+                games.Remove(game);
             }
         }
     }

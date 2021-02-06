@@ -51,7 +51,7 @@ namespace Avalon.Web.Services
 
                 var result = await tcs.Task;
 
-                await client.EditMessageReplyMarkupAsync(new ChatId(message.Chat.Id), message.MessageId);
+                await client.DeleteMessageAsync(new ChatId(message.Chat.Id), message.MessageId);
 
                 return result;
             }
@@ -102,7 +102,7 @@ namespace Avalon.Web.Services
 
                 var result = await tcs.Task;
 
-                await client.EditMessageReplyMarkupAsync(new ChatId(message.Chat.Id), message.MessageId);
+                await client.DeleteMessageAsync(new ChatId(message.Chat.Id), message.MessageId);
 
                 return result;
             }
@@ -139,7 +139,7 @@ namespace Avalon.Web.Services
 
                 var result = await tcs.Task;
 
-                await client.EditMessageReplyMarkupAsync(new ChatId(message.Chat.Id), message.MessageId);
+                await client.DeleteMessageAsync(new ChatId(message.Chat.Id), message.MessageId);
 
                 return result;
             }
@@ -151,7 +151,7 @@ namespace Avalon.Web.Services
 
         public async Task SendMessage(long id, string message)
         {
-            await Task.Delay(2000);
+            await Task.Delay(1000);
 
             await client.SendTextMessageAsync(new Telegram.Bot.Types.ChatId(id), message);
         }

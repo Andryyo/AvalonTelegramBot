@@ -33,7 +33,7 @@ namespace Avalon.Web.Services
 
             var user = new Core.Models.User(userInteractionService);
             user.Id = message.From.Id;
-            user.Name = message.From.Username;
+            user.Name = message.From.Username ?? message.From.FirstName ?? "Unknown";
 
             await gamesManager.Join(message.Chat.Id, user);
         }

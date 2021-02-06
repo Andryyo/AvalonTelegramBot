@@ -61,7 +61,7 @@ namespace Avalon.Core.Phases
 
             if (Context.Results.Count(x => x == Enums.QuestCard.MissionFailed) == FailsRequired)
             {
-                return new AssassinationPhase(Context);
+                return new EvilWonPhase(Context);
             }
 
             return new TeamBuildingPhase(Context, Round + 1, 0);

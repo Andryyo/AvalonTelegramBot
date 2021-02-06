@@ -10,6 +10,8 @@ namespace Avalon.Web.Interfaces
 
         Task Create(long id);
 
+        Task Clear(long id);
+
         Task Join(long id, IUser user);
 
         Task Play(long id);
