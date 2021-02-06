@@ -39,7 +39,7 @@ namespace Avalon.Core.Models
         public async Task<IPhase> Execute()
         {
             var teamSize = GetTeamSize(Context.Users.Count(), Round);
-            await Context.Leader.SendMessage(string.Format("{0}, please assign {1} players to quest team", Context.Leader.Name, teamSize));
+            await Context.SendMessage(string.Format("Leader {0} is assigning {1} team members", Context.Leader.Name, teamSize));
             var team = await Context.Leader.SelectUsers(Context.Users, teamSize);
 
             await Context.SendMessage(string.Format("Proposed team is {0}", string.Join(", ", team.Select(user => user.Name))));

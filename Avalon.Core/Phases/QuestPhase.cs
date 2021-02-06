@@ -64,7 +64,7 @@ namespace Avalon.Core.Phases
                 return new AssassinationPhase(Context);
             }
 
-            return new TeamBuildingPhase(Context, Round, 0);
+            return new TeamBuildingPhase(Context, Round + 1, 0);
         }
     }
 }
