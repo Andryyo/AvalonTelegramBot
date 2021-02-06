@@ -40,6 +40,7 @@ namespace Avalon.Web
             services.AddTransient<ICommandHandler, StartCommandHandler>();
             services.AddTransient<ICommandHandler, JoinCommandHandler>();
             services.AddTransient<ICommandHandler, PlayCommandHandler>();
+            services.AddTransient<ICommandHandler, ClearCommandHandler>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
