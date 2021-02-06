@@ -25,6 +25,8 @@ namespace Avalon.Core.Models
 
         public async Task<QuestCard> SelectQuestCard()
         {
+            await Task.Delay(2000);
+
             switch (Role)
             {
                 case Enums.Role.Assassin:
@@ -39,10 +41,17 @@ namespace Avalon.Core.Models
 
         public async Task<IEnumerable<IUser>> SelectUsers(IEnumerable<IUser> users, int count)
         {
+            await Task.Delay(2000);
+
             return users.Select(x => new { User = x, Value = random.Next() }).OrderBy(x => x.Value).Take(count).Select(x => x.User);
         }
 
-        public async Task<VoteToken> SelectVoteToken() => random.Next(2) == 1 ? VoteToken.VoteApproved : VoteToken.VoteRejected;
+        public async Task<VoteToken> SelectVoteToken()
+        {
+            await Task.Delay(2000);
+
+            return random.Next(2) == 1 ? VoteToken.VoteApproved : VoteToken.VoteRejected;
+        }
 
         public async Task SendMessage(string message)
         {

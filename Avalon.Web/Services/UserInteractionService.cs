@@ -18,23 +18,31 @@ namespace Avalon.Web.Services
             this.client = client;
         }
 
-        public Task<QuestCard> SelectQuestCard(long id)
+        public async Task<QuestCard> SelectQuestCard(long id)
         {
-            throw new NotImplementedException();
+            await Task.Delay(2000);
+
+            return QuestCard.MissionSuccess;
         }
 
-        public Task<IEnumerable<IUser>> SelectUsers(long id, IEnumerable<IUser> users, int count)
+        public async Task<IEnumerable<IUser>> SelectUsers(long id, IEnumerable<IUser> users, int count)
         {
-            throw new NotImplementedException();
+            await Task.Delay(2000);
+
+            return users.Select(x => new { User = x, Value = new Random().Next() }).OrderBy(x => x.Value).Take(count).Select(x => x.User);
         }
 
-        public Task<VoteToken> SelectVoteToken(long id)
+        public async Task<VoteToken> SelectVoteToken(long id)
         {
-            throw new NotImplementedException();
+            await Task.Delay(2000);
+
+            return VoteToken.VoteApproved;
         }
 
         public async Task SendMessage(long id, string message)
         {
+            await Task.Delay(2000);
+
             await client.SendTextMessageAsync(new Telegram.Bot.Types.ChatId(id), message);
         }
     }

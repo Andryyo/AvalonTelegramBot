@@ -33,8 +33,11 @@ namespace Avalon.Web
 
             services.AddTransient<ITelegramBotClient, TelegramBotClient>((p) => new TelegramBotClient(Configuration["botToken"]));
             services.AddTransient<IUserInteractionService, UserInteractionService>();
-
+            services.AddSingleton<IGamesManager, GamesManager>();
+            
             services.AddTransient<ICommandHandler, StartCommandHandler>();
+            services.AddTransient<ICommandHandler, JoinCommandHandler>();
+            services.AddTransient<ICommandHandler, PlayCommandHandler>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

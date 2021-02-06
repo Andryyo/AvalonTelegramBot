@@ -22,6 +22,7 @@ namespace Avalon.Core.Models
         int Round { get; set; }
         public int UnsuccessfullVotes { get; }
 
+        private const int MaxUnsessessfullVotesInARow = 5;
         Dictionary<int, Dictionary<int, int>> teamSizesTable = new Dictionary<int, Dictionary<int, int>>()
         {
             { 5, new Dictionary<int, int>() { { 1, 2 }, { 2, 3}, { 3, 2}, { 4, 3}, { 5, 3} } },
@@ -41,7 +42,7 @@ namespace Avalon.Core.Models
             await Context.Leader.SendMessage(string.Format("Please assign {0} players to quest team", teamSize));
             var team = await Context.Leader.SelectUsers(Context.Users, teamSize);
 
-            await Context.SendMessage(string.Format("Proposed team is {0}", string.Join(",", team.Select(user => user.Name))));
+            await Context.SendMessage(string.Format("Proposed team is {0}", string.Join(", ", team.Select(user => user.Name))));
             TransferLeadership();
 
             await Context.SendMessage(string.Format("New leader is {0}", Context.Leader.Name));
@@ -51,25 +52,23 @@ namespace Avalon.Core.Models
             {
                 await Context.SendMessage("Team is approved");
 
-                new QuestPhase(Context, team, Round);
+                return new QuestPhase(Context, team, Round);
             }
             else
             {
-                if (UnsuccessfullVotes == 5)
+                if (UnsuccessfullVotes == MaxUnsessessfullVotesInARow)
                 {
                     await Context.SendMessage("Uncessessfull votes limit reached");
 
-                    new EvilWonPhase(Context);
+                    return new EvilWonPhase(Context);
                 }
                 else
                 {
                     await Context.SendMessage(string.Format("Team not approved, attempts {0}", UnsuccessfullVotes + 1));
 
-                    new TeamBuildingPhase(Context, Round, UnsuccessfullVotes + 1);
+                    return new TeamBuildingPhase(Context, Round, UnsuccessfullVotes + 1);
                 }
             }
-
-            return null;
         }
 
         private void TransferLeadership()

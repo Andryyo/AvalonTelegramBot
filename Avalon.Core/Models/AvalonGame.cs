@@ -1,3 +1,4 @@
+using Avalon.Core.Enums;
 using Avalon.Core.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -5,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Avalon.Core.Models
 {
-    class AvalonGame : IAvalonGame
+    public class AvalonGame : IAvalonGame
     {
         private readonly IUserInteractionService userInteractionService;
 
@@ -14,12 +15,16 @@ namespace Avalon.Core.Models
             this.userInteractionService = userInteractionService;
         }
 
-        public int Id { get; set; }
+        public long Id { get; set; }
 
-        public IList<IUser> Users { get; set; }
+        public IList<IUser> Users { get; set; } = new List<IUser>();
+
+        public GameState State { get; set; } = GameState.Created;
 
         public async Task Run()
         {
+            State = GameState.InProgress;
+
             var context = new AvalonContext(userInteractionService);
             context.Users = Users;
             context.Id = Id;
@@ -29,6 +34,8 @@ namespace Avalon.Core.Models
             {
                 state = await state.Execute();
             }
+
+            State = GameState.Ended;
         }
     }
 }

@@ -55,7 +55,11 @@ namespace Avalon.Web
             {
                 foreach (var command in commands)
                 {
-                    await commandHandlers.FirstOrDefault(x => x.Command == command)?.Handle(message);
+                    var handler = commandHandlers.FirstOrDefault(x => x.Command == command);
+                    if (handler != null)
+                    {
+                        await handler.Handle(message);
+                    }
                 }
             }
         }

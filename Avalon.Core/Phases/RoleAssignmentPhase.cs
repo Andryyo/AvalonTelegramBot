@@ -36,7 +36,7 @@ namespace Avalon.Core.Models
 
             await Context.SendMessage(string.Format("Leader is {0}", Context.Leader.Name));
 
-            return new IntroductionPhase();
+            return new IntroductionPhase(Context);
         }
 
         private async Task SendRole(IUser user)

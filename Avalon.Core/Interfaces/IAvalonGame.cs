@@ -1,11 +1,14 @@
+using Avalon.Core.Enums;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Avalon.Core.Interfaces
 {
-    interface IAvalonGame
+    public interface IAvalonGame
     {
-        int Id { get; set; }
+        long Id { get; set; }
+
+        GameState State { get; set; }
 
         IList<IUser> Users { get; set; }
 

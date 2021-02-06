@@ -8,6 +8,8 @@ namespace Avalon.Core.Phases
 {
     public class QuestPhase : IPhase
     {
+        private const int SuccessesRequired = 3;
+        private const int FailsRequired = 3;
         private readonly IEnumerable<IUser> participants;
 
         public QuestPhase(
@@ -26,7 +28,7 @@ namespace Avalon.Core.Phases
 
         public async Task<IPhase> Execute()
         {
-            await Context.SendMessage(string.Format("{0} are to decide quest outcome", string.Join(",", participants.Select(x => x.Name))));
+            await Context.SendMessage(string.Format("{0} are to decide quest outcome", string.Join(", ", participants.Select(x => x.Name))));
 
             var votes = await Task.WhenAll(participants.Select(x => x.SelectQuestCard()));
 
@@ -39,15 +41,15 @@ namespace Avalon.Core.Phases
                 Context.Results.Add(Enums.QuestCard.MissionSuccess);
             }
 
-            await Context.SendMessage(string.Format("Quest tokens are {0}", string.Join(",", votes)));
-            await Context.SendMessage(string.Format("Quests results are {0}", string.Join(",", Context.Results)));
+            await Context.SendMessage(string.Format("Quest tokens are {0}", string.Join(", ", votes)));
+            await Context.SendMessage(string.Format("Quests results are {0}", string.Join(", ", Context.Results)));
 
-            if (Context.Results.Count(x => x == Enums.QuestCard.MissionSuccess) == 3)
+            if (Context.Results.Count(x => x == Enums.QuestCard.MissionSuccess) == SuccessesRequired)
             {
                 return new AssassinationPhase(Context);
             }
 
-            if (Context.Results.Count(x => x == Enums.QuestCard.MissionFailed) == 3)
+            if (Context.Results.Count(x => x == Enums.QuestCard.MissionFailed) == FailsRequired)
             {
                 return new AssassinationPhase(Context);
             }

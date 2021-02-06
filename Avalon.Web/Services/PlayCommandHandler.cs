@@ -8,12 +8,12 @@ using Telegram.Bot.Types;
 
 namespace Avalon.Web.Services
 {
-    public class StartCommandHandler : ICommandHandler
+    public class PlayCommandHandler : ICommandHandler
     {
         private readonly IUserInteractionService userInteractionService;
         private readonly IGamesManager gamesManager;
 
-        public StartCommandHandler(
+        public PlayCommandHandler(
             IUserInteractionService userInteractionService,
             IGamesManager gamesManager)
         {
@@ -21,7 +21,7 @@ namespace Avalon.Web.Services
             this.gamesManager = gamesManager;
         }
 
-        public string Command => "/start";
+        public string Command => "/play";
 
         public async Task Handle(Message message)
         {
@@ -31,7 +31,7 @@ namespace Avalon.Web.Services
                 return;
             }
 
-            await gamesManager.Create(message.Chat.Id);
+            await gamesManager.Play(message.Chat.Id);
         }
     }
 }
