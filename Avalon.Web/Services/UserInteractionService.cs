@@ -49,7 +49,11 @@ namespace Avalon.Web.Services
                         new InlineKeyboardButton() { Text = "Success", CallbackData = QuestCard.MissionSuccess.ToString() },
                         new InlineKeyboardButton() { Text = "Failed", CallbackData = QuestCard.MissionFailed.ToString() } }));
 
-                return await tcs.Task;
+                var result = await tcs.Task;
+
+                await client.EditMessageReplyMarkupAsync(new ChatId(message.Chat.Id), message.MessageId);
+
+                return result;
             }
             finally
             {
@@ -85,7 +89,11 @@ namespace Avalon.Web.Services
                     replyMarkup: new InlineKeyboardMarkup(
                         users.Select(x => new InlineKeyboardButton() { Text = x.Name, CallbackData = x.Id.ToString() })));
 
-                return await tcs.Task;
+                var result = await tcs.Task;
+
+                await client.EditMessageReplyMarkupAsync(new ChatId(message.Chat.Id), message.MessageId);
+
+                return result;
             }
             finally
             {
@@ -118,7 +126,11 @@ namespace Avalon.Web.Services
                         new InlineKeyboardButton() { Text = "Approve", CallbackData = VoteToken.VoteApproved.ToString() },
                         new InlineKeyboardButton() { Text = "Reject", CallbackData = VoteToken.VoteRejected.ToString() } }));
 
-                return await tcs.Task;
+                var result = await tcs.Task;
+
+                await client.EditMessageReplyMarkupAsync(new ChatId(message.Chat.Id), message.MessageId);
+
+                return result;
             }
             finally
             {
