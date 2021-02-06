@@ -33,7 +33,11 @@ namespace Avalon.Core.Phases
 
             var votes = await Task.WhenAll(participants.Select(x => x.SelectQuestCard()));
 
-            await Context.SendMessage(string.Format("Old quests results are {0}", string.Join(", ", Context.Results)));
+            if (Context.Results.Count != 0)
+            {
+                await Context.SendMessage(string.Format("Old quests results are {0}", string.Join(", ", Context.Results)));
+            }
+
             var random = new Random();
             var shuffledVotes = votes.Select(x => new { Vote = x, Value = random.Next() }).OrderBy(x => x.Value).Select(x => x.Vote);
 

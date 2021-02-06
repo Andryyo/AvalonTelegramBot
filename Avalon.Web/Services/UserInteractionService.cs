@@ -65,16 +65,27 @@ namespace Avalon.Web.Services
         {
             var tcs = new TaskCompletionSource<IEnumerable<IUser>>();
             Message message = null;
-            var selectedUsers = new HashSet<string>();
+            var selectedUsers = new HashSet<IUser>();
 
             EventHandler<CallbackQueryEventArgs> handler = (s, e) =>
             {
                 if (message.MessageId == e.MessageId)
                 {
-                    selectedUsers.Add(e.Data);
+                    selectedUsers.Add(users.FirstOrDefault(x => x.Id.ToString() == e.Data));
+
+                    client
+                        .EditMessageReplyMarkupAsync(
+                            new ChatId(message.Chat.Id),
+                            message.MessageId,
+                            new InlineKeyboardMarkup(
+                                users
+                                    .Where(x => !selectedUsers.Contains(x))
+                                    .Select(x => new InlineKeyboardButton[] { new InlineKeyboardButton() { Text = x.Name, CallbackData = x.Id.ToString() } })))
+                        .Wait();
+
                     if (selectedUsers.Count == count)
                     {
-                        tcs.TrySetResult(selectedUsers.Select(x => users.FirstOrDefault(u => u.Id.ToString() == x)));
+                        tcs.TrySetResult(selectedUsers);
                     }
                 }
             };
@@ -87,7 +98,7 @@ namespace Avalon.Web.Services
                     chatId: new Telegram.Bot.Types.ChatId(id),
                     text: string.Format("Please select {0}", count),
                     replyMarkup: new InlineKeyboardMarkup(
-                        users.Select(x => new InlineKeyboardButton() { Text = x.Name, CallbackData = x.Id.ToString() })));
+                        users.Select(x => new InlineKeyboardButton[] { new InlineKeyboardButton() { Text = x.Name, CallbackData = x.Id.ToString() } })));
 
                 var result = await tcs.Task;
 

@@ -25,8 +25,6 @@ namespace Avalon.Core.Models
 
         public async Task<QuestCard> SelectQuestCard()
         {
-            await Task.Delay(2000);
-
             switch (Role)
             {
                 case Enums.Role.Assassin:
@@ -41,8 +39,6 @@ namespace Avalon.Core.Models
 
         public async Task<IEnumerable<IUser>> SelectUsers(IEnumerable<IUser> users, int count)
         {
-            await Task.Delay(2000);
-
             return users
                 .Where(x => x.Role != Enums.Role.Minion && x.Role != Enums.Role.Assassin)
                 .Select(x => new { User = x, Value = random.Next() })
@@ -54,8 +50,6 @@ namespace Avalon.Core.Models
 
         public async Task<VoteToken> SelectVoteToken()
         {
-            await Task.Delay(2000);
-
             return random.Next(2) == 1 ? VoteToken.VoteApproved : VoteToken.VoteRejected;
         }
 

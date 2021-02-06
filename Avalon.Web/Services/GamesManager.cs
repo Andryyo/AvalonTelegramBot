@@ -55,6 +55,7 @@ namespace Avalon.Web.Services
                 {
                     var user = new DummyUser(random);
                     user.Name = string.Format("Dummy {0}", ++i);
+                    user.Id = i;
                     game.Users.Add(user);
 
                     await userInteractionService.SendMessage(id, string.Format("{0} joined the game", user.Name));
