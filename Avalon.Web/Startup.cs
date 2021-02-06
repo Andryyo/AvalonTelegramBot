@@ -34,7 +34,9 @@ namespace Avalon.Web
             services.AddTransient<ITelegramBotClient, TelegramBotClient>((p) => new TelegramBotClient(Configuration["botToken"]));
             services.AddTransient<IUserInteractionService, UserInteractionService>();
             services.AddSingleton<IGamesManager, GamesManager>();
-            
+
+            services.AddSingleton<ICallbackQueryHandler, CallbackQueryHandler>();
+
             services.AddTransient<ICommandHandler, StartCommandHandler>();
             services.AddTransient<ICommandHandler, JoinCommandHandler>();
             services.AddTransient<ICommandHandler, PlayCommandHandler>();

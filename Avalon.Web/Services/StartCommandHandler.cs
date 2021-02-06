@@ -25,11 +25,11 @@ namespace Avalon.Web.Services
 
         public async Task Handle(Message message)
         {
-            if (message.Chat.Type == Telegram.Bot.Types.Enums.ChatType.Private)
-            {
-                await userInteractionService.SendMessage(message.Chat.Id, "You should add bot to a group");
-                return;
-            }
+            //if (message.Chat.Type == Telegram.Bot.Types.Enums.ChatType.Private)
+            //{
+            //    await userInteractionService.SendMessage(message.Chat.Id, "You should add bot to a group");
+            //    return;
+            //}
 
             await gamesManager.Create(message.Chat.Id);
         }

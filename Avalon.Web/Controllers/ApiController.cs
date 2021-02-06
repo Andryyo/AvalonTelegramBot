@@ -18,13 +18,16 @@ namespace Avalon.Web
     {
         private readonly ILogger logger;
         private readonly IEnumerable<ICommandHandler> commandHandlers;
+        private readonly ICallbackQueryHandler callbackQueryHandler;
 
         public ApiController(
             ILogger<ApiController> logger,
-            IEnumerable<ICommandHandler> commandHandlers)
+            IEnumerable<ICommandHandler> commandHandlers,
+            ICallbackQueryHandler callbackQueryHandler)
         {
             this.logger = logger;
             this.commandHandlers = commandHandlers;
+            this.callbackQueryHandler = callbackQueryHandler;
         }
 
         public async Task Post(Update update)
@@ -43,6 +46,7 @@ namespace Avalon.Web
 
         private async Task HandleCallbackQuery(CallbackQuery callbackQuery)
         {
+            await callbackQueryHandler.Handle(callbackQuery);
         }
 
         private async Task HandleMessage(Message message)

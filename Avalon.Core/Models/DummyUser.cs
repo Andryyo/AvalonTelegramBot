@@ -43,7 +43,13 @@ namespace Avalon.Core.Models
         {
             await Task.Delay(2000);
 
-            return users.Select(x => new { User = x, Value = random.Next() }).OrderBy(x => x.Value).Take(count).Select(x => x.User);
+            return users
+                .Where(x => x.Role != Enums.Role.Minion && x.Role != Enums.Role.Assassin)
+                .Select(x => new { User = x, Value = random.Next() })
+                .OrderBy(x => x.Value)
+                .Take(count)
+                .Select(x => x.User)
+                .ToList();
         }
 
         public async Task<VoteToken> SelectVoteToken()
