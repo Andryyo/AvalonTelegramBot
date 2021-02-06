@@ -19,7 +19,7 @@ namespace Avalon.Core.Phases
         {
             await Context.SendMessage("Evil won");
 
-            return null;
+            return new EndPhase(Context);
         }
     }
 }

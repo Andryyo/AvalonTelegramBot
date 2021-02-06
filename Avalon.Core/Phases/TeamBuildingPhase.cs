@@ -39,16 +39,17 @@ namespace Avalon.Core.Models
         public async Task<IPhase> Execute()
         {
             var teamSize = GetTeamSize(Context.Users.Count(), Round);
-            await Context.Leader.SendMessage(string.Format("Please assign {0} players to quest team", teamSize));
+            await Context.Leader.SendMessage(string.Format("{0}, please assign {0} players to quest team", Context.Leader.Name, teamSize));
             var team = await Context.Leader.SelectUsers(Context.Users, teamSize);
 
             await Context.SendMessage(string.Format("Proposed team is {0}", string.Join(", ", team.Select(user => user.Name))));
             TransferLeadership();
 
-            await Context.SendMessage(string.Format("New leader is {0}", Context.Leader.Name));
+            var votes = await Task.WhenAll(Context.Users.Select(x => Task.Run(async () => new { User = x, Vote = await x.SelectVoteToken() })));
 
-            var votes = await Task.WhenAll(Context.Users.Select(x => x.SelectVoteToken()));
-            if (votes.Count(x => x == VoteToken.VoteApproved) > votes.Count(x => x == VoteToken.VoteRejected))
+            await Context.SendMessage(string.Format("Votes are:\r\n{0}", string.Join("\r\n", votes.Select(v => string.Format("{0} - {1}", v.User.Name, v.Vote)))));
+
+            if (votes.Count(x => x.Vote == VoteToken.VoteApproved) > votes.Count(x => x.Vote == VoteToken.VoteRejected))
             {
                 await Context.SendMessage("Team is approved");
 

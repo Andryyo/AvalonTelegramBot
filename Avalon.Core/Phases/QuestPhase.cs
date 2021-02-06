@@ -1,5 +1,6 @@
 using Avalon.Core.Interfaces;
 using Avalon.Core.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -32,17 +33,22 @@ namespace Avalon.Core.Phases
 
             var votes = await Task.WhenAll(participants.Select(x => x.SelectQuestCard()));
 
+            await Context.SendMessage(string.Format("Old quests results are {0}", string.Join(", ", Context.Results)));
+            var random = new Random();
+            var shuffledVotes = votes.Select(x => new { Vote = x, Value = random.Next() }).OrderBy(x => x.Value).Select(x => x.Vote);
+
             if (votes.Any(x => x == Enums.QuestCard.MissionFailed))
             {
+                await Context.SendMessage(string.Format("Quest failed, tokens are {0}", string.Join(", ", shuffledVotes)));
+
                 Context.Results.Add(Enums.QuestCard.MissionFailed);
             }
             else
             {
+                await Context.SendMessage(string.Format("Quest succeeded, tokens are {0}", string.Join(", ", shuffledVotes)));
+
                 Context.Results.Add(Enums.QuestCard.MissionSuccess);
             }
-
-            await Context.SendMessage(string.Format("Quest tokens are {0}", string.Join(", ", votes)));
-            await Context.SendMessage(string.Format("Quests results are {0}", string.Join(", ", Context.Results)));
 
             if (Context.Results.Count(x => x == Enums.QuestCard.MissionSuccess) == SuccessesRequired)
             {

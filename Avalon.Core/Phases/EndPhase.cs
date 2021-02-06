@@ -1,23 +1,25 @@
 ﻿using Avalon.Core.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Avalon.Core.Phases
 {
-    public class GoodWonPhase : IPhase
+    public class EndPhase : IPhase
     {
-        public GoodWonPhase(IAvalonContext context)
+        public EndPhase(
+            IAvalonContext context)
         {
-            this.Context = context;
+            Context = context;
         }
 
         public IAvalonContext Context { get; set; }
 
         public async Task<IPhase> Execute()
         {
-            await Context.SendMessage("Good won");
+            await Context.SendMessage(string.Format("Roles were:\r\n{0}", string.Join("\r\n", Context.Users.Select(u => string.Format("{0} - {1}", u.Name, u.Role)))));
 
             return new EndPhase(Context);
         }
