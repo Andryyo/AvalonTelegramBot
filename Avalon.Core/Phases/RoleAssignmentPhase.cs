@@ -21,9 +21,9 @@ namespace Avalon.Core.Models
         {
             await Context.SendMessage("Wait, we`ll assign roles");
 
-            var rand = new Random((int)DateTime.Now.Ticks);
+            var rand = new Random();
 
-            var roles = GetRoles(Context.Users.Count()).OrderBy(x => rand.Next()).ToArray();
+            var roles = GetRoles(Context.Users.Count()).Select(x => new { Role = x, Value = rand.Next() }).OrderBy(x => x.Value).Select(x => x.Role).ToArray();
 
             int i = 0;
             foreach (var user in Context.Users)
