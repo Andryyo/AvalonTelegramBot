@@ -21,7 +21,7 @@ namespace Avalon.Core.Phases
         {
             await Context.SendMessage(string.Format("Roles were:\r\n{0}", string.Join("\r\n", Context.Users.Select(u => string.Format("{0} - {1}", u.Name, u.Role)))));
 
-            return new EndPhase(Context);
+            return null;
         }
     }
 }
